@@ -1,6 +1,6 @@
 ## Autor
 
-Este sistema foi criado por Gustavo Freitas Cunha, para a disciplina de Enegenharia de Software II, do curso de graduação em Sistemas de Informação da  Universidade Federal de Minas Gerais. Gustavo pode ser contatado pelo endereço eletrônico `gustavocunha@dcc.ufmg.br`.
+Este sistema foi criado por Gustavo Freitas Cunha, para a disciplina de Enegenharia de Software II, do curso de graduação em Sistemas de Informação do Departamento de Ciência da Computação da Universidade Federal de Minas Gerais. Gustavo pode ser contatado pelo endereço eletrônico `gustavocunha@dcc.ufmg.br`.
 
 ## Sistema Bancário Simples em C++
 
