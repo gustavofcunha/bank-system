@@ -1,0 +1,228 @@
+#include "banco.h"
+#include "conta.h"
+#include <iostream>
+#include "gerenciador_memoria.h"
+
+GerenciadorMemoria gerenciadorMemoriaBanco;
+
+Banco::Banco(const std::vector<Conta>& contas) : contas(contas) {}
+
+void Banco::abrirConta() {
+    std::string titular, senha;
+    std::cout << "Digite o nome completo do titular da conta: ";
+    std::cin.ignore(); // Ignorar o caractere de nova linha deixado pelo cin anterior
+    std::getline(std::cin, titular);
+    std::cout << "Digite a senha da conta: ";
+    std::cin >> senha;
+    Conta conta(contas.size() + 1, titular, senha);
+    contas.push_back(conta);
+    std::cout << "Conta criada com sucesso. Número da conta: " << conta.getNumeroConta() << std::endl;
+}
+
+
+void Banco::depositar() {
+    int numeroConta;
+    double valor;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {
+            std::string senha;
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == conta.getSenha()) {
+                std::cout << "Digite o valor a ser depositado: ";
+                std::cin >> valor;
+                conta.depositar(valor, true);
+                std::cout << "Depósito realizado com sucesso." << std::endl;
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+void Banco::sacar() {
+    int numeroConta;
+    double valor;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {
+            std::string senha;
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == conta.getSenha()) {
+                std::cout << "Digite o valor a ser sacado: ";
+                std::cin >> valor;
+                if (conta.sacar(valor, true)) {
+                    std::cout << "Saque realizado com sucesso." << std::endl;
+                } else {
+                    std::cout << "Saldo insuficiente." << std::endl;
+                }
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+void Banco::consultarSaldo() {
+    int numeroConta;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {
+            std::string senha;
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == conta.getSenha()) {
+                std::cout << "Saldo: " << conta.consultarSaldo() << std::endl;
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+void Banco::transferir() {
+    int numeroContaOrigem, numeroContaDestino;
+    std::string senha, transacao;
+    double valor;
+    std::cout << "Digite o número da conta de origem: ";
+    std::cin >> numeroContaOrigem;
+
+    for (auto& contaOrigem : contas) {
+        if (contaOrigem.getNumeroConta() == numeroContaOrigem) {
+            std::cout << "Digite a senha da conta de origem: ";
+            std::cin >> senha;
+            if (senha == contaOrigem.getSenha()) {
+                std::cout << "Digite o número da conta de destino: ";
+                std::cin >> numeroContaDestino;
+                for (auto& contaDestino : contas) {
+                    if (contaDestino.getNumeroConta() == numeroContaDestino) {
+                        std::cout << "Digite o valor a ser transferido: ";
+                        std::cin >> valor;
+                        if (contaOrigem.sacar(valor, false)) {
+                            contaDestino.depositar(valor, false);
+
+                            transacao = "Transferência de " + 
+                            std::to_string(valor) + " realizada para conta " + 
+                            std::to_string(numeroContaDestino);
+                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
+                            contaOrigem.historico.push_back(transacao);
+
+                            transacao = "Transferência de " + 
+                            std::to_string(valor) + " recebida da conta número " + 
+                            std::to_string(numeroContaOrigem);
+                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaDestino, transacao);
+                            contaDestino.historico.push_back(transacao);
+
+                            std::cout << "Transferência realizada com sucesso." << std::endl;
+                        } else {
+                            transacao = "Tentativa de transferência de " + 
+                            std::to_string(valor) + "  para conta " + 
+                            std::to_string(numeroContaDestino);
+                            contaOrigem.historico.push_back(transacao);
+                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
+
+                            std::cout << "Saldo insuficiente." << std::endl;
+                        }
+                        return;
+                    }
+                }
+                transacao = "Tentativa de transferência para a conta " + 
+                std::to_string(numeroContaDestino) + ", que não existe.";
+                contaOrigem.historico.push_back(transacao);
+                gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
+
+                std::cout << "Conta de destino não encontrada." << std::endl;
+            } else {
+                
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta de origem não encontrada." << std::endl;
+}
+
+void Banco::encerrarConta() {
+    int numeroConta;
+    std::string senha;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+
+    auto it = contas.begin(); // Inicializa um iterador para o início do vetor
+
+    while (it != contas.end()) {
+        if (it->getNumeroConta() == numeroConta) {
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == it->getSenha()) {
+                it = contas.erase(it); // Remove a conta e atualiza o iterador
+                std::cout << "Conta encerrada com sucesso." << std::endl;
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+        ++it; // Avança para o próximo elemento do vetor
+    }
+
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+void Banco::verExtratoConta(){
+    int numeroConta;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {
+            std::string senha;
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == conta.getSenha()) {
+                conta.exibirHistorico();
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+void Banco::verInformacoesConta(){
+    int numeroConta;
+    std::cout << "Digite o número da conta: ";
+    std::cin >> numeroConta;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {
+            std::string senha;
+            std::cout << "Digite a senha da conta: ";
+            std::cin >> senha;
+            if (senha == conta.getSenha()) {
+                std::cout << std::endl << "Sumário de Informações da Conta Número " 
+                << conta.getNumeroConta() << ":" << std::endl;
+
+                std::cout << "Titular: " << conta.getTitular() << std::endl;
+                std::cout << "Saldo: " << conta.consultarSaldo() << std::endl;
+            } else {
+                std::cout << "Senha incorreta." << std::endl;
+            }
+            return;
+        }
+    }
+    std::cout << "Conta não encontrada." << std::endl;
+}
+
+const std::vector<Conta>& Banco::getContas() {
+    return contas;
+}
