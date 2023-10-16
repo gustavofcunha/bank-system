@@ -43,8 +43,3 @@ Isso irá compilar o código-fonte e gerar um executável chamado `banco.exe`.
 Para executar o sistema, use o seguinte comando:
 
 `./bin/banco.exe`
-
-
-
-
-
