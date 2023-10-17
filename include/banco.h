@@ -20,6 +20,7 @@ public:
     void verInformacoesConta();
     Conta* procuraConta(int numeroConta);
     const std::vector<Conta>& getContas();
+    int maiorNumeroConta();
 };
 
 #endif

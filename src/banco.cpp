@@ -7,6 +7,16 @@ GerenciadorMemoria gerenciadorMemoriaBanco;
 
 Banco::Banco(const std::vector<Conta>& contas) : contas(contas) {}
 
+int Banco::maiorNumeroConta(){
+    int maior = -1;
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() > maior) {   
+            maior = conta.getNumeroConta();
+        }
+    }
+    return maior;
+}
+
 void Banco::abrirConta() {
     std::string titular, senha;
     std::cout << "Digite o nome completo do titular da conta: ";
@@ -14,7 +24,8 @@ void Banco::abrirConta() {
     std::getline(std::cin, titular);
     std::cout << "Digite a senha da conta: ";
     std::cin >> senha;
-    Conta conta(contas.size() + 1, titular, senha);
+    int maiorNumeroConta = this->maiorNumeroConta();
+    Conta conta(maiorNumeroConta+ 1, titular, senha);
     contas.push_back(conta);
     std::cout << "Conta criada com sucesso. Número da conta: " << conta.getNumeroConta() << std::endl;
 }
