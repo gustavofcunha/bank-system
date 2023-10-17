@@ -21,6 +21,7 @@ public:
     Conta* procuraConta(int numeroConta);
     const std::vector<Conta>& getContas();
     int maiorNumeroConta();
+    bool verificarSenha(Conta& conta);
 };
 
 #endif
