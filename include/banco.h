@@ -18,6 +18,7 @@ public:
     void encerrarConta();
     void verExtratoConta();
     void verInformacoesConta();
+    Conta* procuraConta(int numeroConta);
     const std::vector<Conta>& getContas();
 };
 

@@ -1,6 +1,0 @@
-1 Depósito de 67.000000 realizado.
-1 Depósito de 69.000000 realizado.
-1 Depósito de 5.820000 realizado.
-1 Saque de 4.820000 realizado.
-1 Transferência de 7.020000 realizada para conta 2
-2 Transferência de 7.020000 recebida da conta número 1

@@ -91,66 +91,89 @@ void Banco::consultarSaldo() {
     std::cout << "Conta não encontrada." << std::endl;
 }
 
+Conta* Banco::procuraConta(int numeroConta){
+    for (auto& conta : contas) {
+        if (conta.getNumeroConta() == numeroConta) {   
+            return &conta;
+        }
+    }
+    return nullptr;
+}
+
 void Banco::transferir() {
     int numeroContaOrigem, numeroContaDestino;
     std::string senha, transacao;
     double valor;
+
     std::cout << "Digite o número da conta de origem: ";
     std::cin >> numeroContaOrigem;
+    Conta *contaOrigem = this->procuraConta(numeroContaOrigem);
+    if(!contaOrigem){
+        std::cout << "Conta de origem não encontrada." << std::endl;
+        return;
+    }
 
-    for (auto& contaOrigem : contas) {
-        if (contaOrigem.getNumeroConta() == numeroContaOrigem) {
-            std::cout << "Digite a senha da conta de origem: ";
-            std::cin >> senha;
-            if (senha == contaOrigem.getSenha()) {
-                std::cout << "Digite o número da conta de destino: ";
-                std::cin >> numeroContaDestino;
-                for (auto& contaDestino : contas) {
-                    if (contaDestino.getNumeroConta() == numeroContaDestino) {
-                        std::cout << "Digite o valor a ser transferido: ";
-                        std::cin >> valor;
-                        if (contaOrigem.sacar(valor, false)) {
-                            contaDestino.depositar(valor, false);
+    std::cout << "Digite a senha da conta de origem: ";
+    std::cin >> senha;
+    if (senha == contaOrigem->getSenha()) {
 
-                            transacao = "Transferência de " + 
-                            std::to_string(valor) + " realizada para conta " + 
-                            std::to_string(numeroContaDestino);
-                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
-                            contaOrigem.historico.push_back(transacao);
+        std::cout << "Digite o número da conta de destino: ";
+        std::cin >> numeroContaDestino;
+        Conta *contaDestino = this->procuraConta(numeroContaDestino);
+        
+        if(!contaDestino){
 
-                            transacao = "Transferência de " + 
-                            std::to_string(valor) + " recebida da conta número " + 
-                            std::to_string(numeroContaOrigem);
-                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaDestino, transacao);
-                            contaDestino.historico.push_back(transacao);
+            //registra tentativa no extrato de transacoes
+            transacao = "Tentativa de transferência para a conta " + 
+            std::to_string(numeroContaDestino) + ", que não existe.";
+            contaOrigem->historico.push_back(transacao);
+            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
 
-                            std::cout << "Transferência realizada com sucesso." << std::endl;
-                        } else {
-                            transacao = "Tentativa de transferência de " + 
-                            std::to_string(valor) + "  para conta " + 
-                            std::to_string(numeroContaDestino);
-                            contaOrigem.historico.push_back(transacao);
-                            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
-
-                            std::cout << "Saldo insuficiente." << std::endl;
-                        }
-                        return;
-                    }
-                }
-                transacao = "Tentativa de transferência para a conta " + 
-                std::to_string(numeroContaDestino) + ", que não existe.";
-                contaOrigem.historico.push_back(transacao);
-                gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
-
-                std::cout << "Conta de destino não encontrada." << std::endl;
-            } else {
-                
-                std::cout << "Senha incorreta." << std::endl;
-            }
+            std::cout << "Conta de destino não encontrada." << std::endl;
             return;
         }
+        
+        std::cout << "Digite o valor a ser transferido: ";
+        std::cin >> valor;
+
+        //se houver saldo suficiente
+        if (contaOrigem->sacar(valor, false)) {
+            contaDestino->depositar(valor, false);
+
+            transacao = "Transferência de " + 
+            std::to_string(valor) + " realizada para conta " + 
+            std::to_string(numeroContaDestino);
+            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
+            contaOrigem->historico.push_back(transacao);
+
+            transacao = "Transferência de " + 
+            std::to_string(valor) + " recebida da conta número " + 
+            std::to_string(numeroContaOrigem);
+            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaDestino, transacao);
+            contaDestino->historico.push_back(transacao);
+
+            std::cout << "Transferência realizada com sucesso." << std::endl;
+        } 
+        
+        //sem saldo suficiente
+        else {
+            transacao = "Tentativa de transferência de " + 
+            std::to_string(valor) + "  para conta " + 
+            std::to_string(numeroContaDestino) + 
+            ", mas a conta de origem não possuía saldo suficiente no momento da tentativa.";
+            contaOrigem->historico.push_back(transacao);
+            gerenciadorMemoriaBanco.salvarDadosTransacoes(numeroContaOrigem, transacao);
+
+            std::cout << "Saldo insuficiente." << std::endl;
+            return;
+        }
+    } 
+    
+    else {
+        std::cout << "Senha incorreta." << std::endl;
     }
-    std::cout << "Conta de origem não encontrada." << std::endl;
+
+    return;
 }
 
 void Banco::encerrarConta() {
