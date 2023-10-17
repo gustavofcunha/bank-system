@@ -2,19 +2,13 @@
 #include "banco.h"
 #include "gerenciador_memoria.h"
 
-int main() {
-    GerenciadorMemoria gerenciadorMemoria;
-    std::vector<Conta> contas = gerenciadorMemoria.carregarDadosContas(); 
-    gerenciadorMemoria.carregarDadosTransacoes(contas);
-
-    Banco banco(contas);
-    int escolha;
-
+void imprimeCabecalhoSistema(){
     std::cout << std::endl;
     std::cout << "=======================BANCO BEAGÁ DE MINAS GERAIS=======================" << std::endl;
     std::cout << "                         Olá, seja bem vindo(a)!                       " << std::endl;
-    
-    do {
+}
+
+void imprimeOpcoesSistema(){
         std::cout << std::endl;
         std::cout << "--------------------------------------------------------------------------------" << std::endl;
         std::cout << "Escolha um dos serviços disponíveis para você neste canal de atendimento:" << std::endl;
@@ -29,6 +23,20 @@ int main() {
         std::cout << "8. Consultar informações da conta" << std::endl;
         std::cout << "9. Sair" << std::endl << std::endl;
         std::cout << "Digite uma opção: ";
+}
+
+int main() {
+    GerenciadorMemoria gerenciadorMemoria;
+    std::vector<Conta> contas = gerenciadorMemoria.carregarDadosContas(); 
+    gerenciadorMemoria.carregarDadosTransacoes(contas);
+
+    Banco banco(contas);
+    int escolha;
+
+    imprimeCabecalhoSistema();
+    
+    do {
+        imprimeOpcoesSistema();
         std::cin >> escolha;
 
         switch (escolha) {
