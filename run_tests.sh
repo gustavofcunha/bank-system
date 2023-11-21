@@ -1,5 +1,6 @@
 # Configuração dos diretórios
 BIN_DIR="./bin"
+OBJ_DIR="./obj"
 
 # Compilar os testes
 cmake -S . -B build
