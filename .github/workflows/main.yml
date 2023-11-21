@@ -1,0 +1,29 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up C++ build environment
+      uses: actions/setup-cpp@v2
+      with:
+        compiler: 'gcc'  # or 'clang' if you prefer
+
+    - name: Build
+      run: make
+
+    - name: Run tests
+      run: ./tests/testes
