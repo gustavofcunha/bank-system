@@ -1,23 +1,29 @@
-name: Run Tests
+name: Build and Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up CMake
-      uses: lukka/run-cmake@v1
+    - name: Set up C++ build environment
+      uses: actions/setup-cpp@v2
+      with:
+        compiler: 'gcc'  # or 'clang' if you prefer
 
-    - name: Build project
-      run: |
-        make clean
-        make
+    - name: Build
+      run: make
 
     - name: Run tests
-      run: ./run_tests.sh
+      run: ./tests/testes

@@ -1,29 +1,33 @@
-CXX = g++
-CXXFLAGS = -Wall -std=c++11
+CXX = g++  
+CXXFLAGS = -Wall -std=c++11 
+
 SRC_DIR = src
-INC_DIR = include
+INCLUDE_DIR = include
 OBJ_DIR = obj
 BIN_DIR = bin
+TESTS_DIR = tests
 
-SRC = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
-EXEC = $(BIN_DIR)/banco.exe
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
-all: $(BIN_DIR) $(OBJ_DIR) $(EXEC)
+all: $(BIN_DIR)/main
 
-$(EXEC): $(OBJ)
+$(BIN_DIR)/main: $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c -o $@ $<
 
-$(BIN_DIR):
-	mkdir -p $(BIN_DIR)
+test: $(TESTS_DIR)/testes
+	$(TESTS_DIR)/testes
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(TESTS_DIR)/testes: $(OBJ_FILES) $(TESTS_DIR)/testes.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+$(TESTS_DIR)/testes.o: $(TESTS_DIR)/testes.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c -o $@ $<
 
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -rf $(OBJ_DIR)/*.o $(BIN_DIR)/* $(TESTS_DIR)/*.o $(TESTS_DIR)/testes
 
-.PHONY: all clean
+.PHONY: all test clean
