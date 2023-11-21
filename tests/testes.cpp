@@ -75,3 +75,17 @@ void testInformacoesConta() {
     banco.verInformacoesConta();
     // Não há muito o que testar aqui além de garantir que a função não quebre
 }
+
+int main() {
+    testAbrirConta();
+    testDepositar();
+    testSaque();
+    testTransferencia();
+    testEncerrarConta();
+    testExtratoConta();
+    testInformacoesConta();
+
+    std::cout << "Todos os testes passaram com sucesso!" << std::endl;
+
+    return 0;
+}
