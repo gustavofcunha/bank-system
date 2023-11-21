@@ -5,6 +5,8 @@
 
 GerenciadorMemoria gerenciadorMemoriaBanco;
 
+Banco::Banco(){}
+
 Banco::Banco(const std::vector<Conta>& contas) : contas(contas) {}
 
 int Banco::maiorNumeroConta(){

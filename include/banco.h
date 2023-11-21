@@ -9,6 +9,7 @@ private:
     std::vector<Conta> contas;
 
 public:
+    Banco();
     Banco(const std::vector<Conta>& contas);
     void abrirConta();
     void depositar();
