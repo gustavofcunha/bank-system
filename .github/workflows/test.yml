@@ -14,7 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and test
+      - name: Install yq
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yq
+
+      - name: Test
         uses: arduino/cpp-test-action@v1
         with:
           source-path: .  
