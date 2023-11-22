@@ -18,5 +18,4 @@ jobs:
         uses: arduino/cpp-test-action@v1
         with:
           source-path: .  
-          build-path: build  
-
+          build-path: build
