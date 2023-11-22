@@ -8,8 +8,11 @@ project(MyArduinoTests)
 # Adiciona os arquivos fonte do teste (assumindo que testes.cpp está no diretório raiz)
 file(GLOB SOURCES "*.cpp")
 
+# Adiciona os arquivos fonte do projeto (banco.cpp e conta.cpp)
+file(GLOB PROJECT_SOURCES "src/*.cpp")
+
 # Configuração do executável do teste
-add_executable(MyArduinoTests ${SOURCES})
+add_executable(MyArduinoTests ${SOURCES} ${PROJECT_SOURCES})
 
 # Adiciona o diretório de inclusão
 target_include_directories(MyArduinoTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
