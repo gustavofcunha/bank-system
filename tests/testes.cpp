@@ -83,5 +83,7 @@ int main() {
     testExtratoConta();
     testInformacoesConta();
 
+    std::cout << "Todos os testes passaram com sucesso!" << std::endl;
+
     return 0;
 }
