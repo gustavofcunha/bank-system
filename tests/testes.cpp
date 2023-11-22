@@ -64,7 +64,6 @@ void testExtratoConta() {
     const std::vector<Conta>& contas = banco.getContas();
     int numeroConta = contas[0].getNumeroConta();
     banco.verExtratoConta();
-    // Não há muito o que testar aqui além de garantir que a função não quebre
 }
 
 void testInformacoesConta() {
@@ -73,7 +72,6 @@ void testInformacoesConta() {
     const std::vector<Conta>& contas = banco.getContas();
     int numeroConta = contas[0].getNumeroConta();
     banco.verInformacoesConta();
-    // Não há muito o que testar aqui além de garantir que a função não quebre
 }
 
 int main() {
@@ -84,8 +82,6 @@ int main() {
     testEncerrarConta();
     testExtratoConta();
     testInformacoesConta();
-
-    std::cout << "Todos os testes passaram com sucesso!" << std::endl;
 
     return 0;
 }
