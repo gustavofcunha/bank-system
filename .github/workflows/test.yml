@@ -17,6 +17,6 @@ jobs:
       - name: Build and test
         uses: arduino/cpp-test-action@v1
         with:
-          source-path: tests  # O caminho para o código de teste
-          build-path: build  # O caminho para o diretório de compilação
+          source-path: .  
+          build-path: build  
 
