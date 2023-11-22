@@ -13,23 +13,20 @@ add_executable(main
     src/gerenciador_memoria.cpp
 )
 
-# Adiciona os arquivos fonte do teste
-file(GLOB TEST_SOURCES "tests/*.cpp")
-
 # Adiciona os arquivos fonte do projeto (banco.cpp e conta.cpp)
 file(GLOB PROJECT_SOURCES "src/*.cpp")
 
 # Configuração do executável do teste
-add_executable(MyArduinoTests ${TEST_SOURCES} ${PROJECT_SOURCES})
+add_executable(testes testes.cpp ${PROJECT_SOURCES})
 
 # Adiciona o diretório de inclusão
-target_include_directories(MyArduinoTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(testes PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Adiciona o diretório de inclusão globalmente
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if(BUILD_TESTS)
     # Configuração do executável de testes
-    add_executable(testes ${TEST_SOURCES} ${PROJECT_SOURCES})
+    add_executable(testes testes.cpp ${PROJECT_SOURCES})
     target_compile_definitions(testes PRIVATE RUN_TESTS)
 endif()
