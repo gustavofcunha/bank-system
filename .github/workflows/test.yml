@@ -14,8 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Test
-        uses: arduino/cpp-test-action@v1
-        with:
-          source-path: .  
-          build-path: build
+      - name: Set up CMake
+        run: cmake -S . -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Run tests
+        run: ./build/TestExecutable
