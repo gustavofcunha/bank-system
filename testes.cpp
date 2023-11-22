@@ -74,6 +74,7 @@ void testInformacoesConta() {
     banco.verInformacoesConta();
 }
 
+#ifdef RUN_TESTS
 int main() {
     testAbrirConta();
     testDepositar();
@@ -87,3 +88,4 @@ int main() {
 
     return 0;
 }
+#endif
