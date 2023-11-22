@@ -1,4 +1,4 @@
-name: Build and test
+name: Test
 
 on: [push, pull_request]
 
@@ -17,5 +17,6 @@ jobs:
       - name: Build and test
         uses: arduino/cpp-test-action@v1
         with:
-            sketch: tests/tests.ino
-            arduino-platform: arduino:avr:uno
+          source-path: tests  # O caminho para o código de teste
+          build-path: build  # O caminho para o diretório de compilação
+
