@@ -16,17 +16,23 @@ add_executable(main
 # Adiciona os arquivos fonte do projeto (banco.cpp e conta.cpp)
 file(GLOB PROJECT_SOURCES "src/*.cpp")
 
-# Configuração do executável do teste
-add_executable(testes testes.cpp ${PROJECT_SOURCES})
+# Configuração do executável de teste
+add_executable(MyArduinoTests 
+    ${PROJECT_SOURCES}
+    testes.cpp
+)
 
 # Adiciona o diretório de inclusão
-target_include_directories(testes PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(MyArduinoTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Adiciona o diretório de inclusão globalmente
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if(BUILD_TESTS)
     # Configuração do executável de testes
-    add_executable(testes testes.cpp ${PROJECT_SOURCES})
+    add_executable(testes 
+        ${PROJECT_SOURCES}
+        testes.cpp
+    )
     target_compile_definitions(testes PRIVATE RUN_TESTS)
 endif()
