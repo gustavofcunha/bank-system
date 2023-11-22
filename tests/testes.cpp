@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
-#include "banco.h"
-#include "conta.h"
+#include "include/banco.h"
+#include "include/conta.h"
 
 void testAbrirConta() {
     Banco banco;
