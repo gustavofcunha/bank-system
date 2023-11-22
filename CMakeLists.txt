@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 # Define o projeto
 project(MyArduinoTests)
 
-# Adiciona os arquivos fonte do teste
+# Adiciona os arquivos fonte do teste (assumindo que testes.cpp está no diretório raiz)
 file(GLOB SOURCES "*.cpp")
 
 # Configuração do executável do teste
