@@ -22,9 +22,10 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
+          if ($env:RUNNER_OS -eq "Windows") {
             .\build\MyArduinoTests.exe
-          else
+          } else {
             ./build/MyArduinoTests
-          fi
+          }
+      
     
