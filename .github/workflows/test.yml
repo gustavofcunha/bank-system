@@ -21,4 +21,4 @@ jobs:
         run: cmake --build build
 
       - name: Run tests
-        run: .\build\MyArduinoTests
+        run: ./build/MyArduinoTests
