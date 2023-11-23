@@ -21,4 +21,10 @@ jobs:
         run: cmake --build build
 
       - name: Run tests
-        run: ./build/MyArduinoTests
+        run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          ./build/MyArduinoTests.exe
+        else
+          ./build/MyArduinoTests
+        fi
+
