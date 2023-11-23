@@ -23,7 +23,7 @@ jobs:
       - name: Run tests
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            ./build/MyArduinoTests.exe
+            .\build\MyArduinoTests.exe
           else
             ./build/MyArduinoTests
           fi
