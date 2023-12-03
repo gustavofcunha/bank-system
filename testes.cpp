@@ -21,10 +21,22 @@ TEST(ContaTest, SacarComSaldoInsuficiente) {
     EXPECT_EQ(conta.consultarSaldo(), 0.0);
 }
 
+TEST(BancoTest, NaoAbrirConta) {
+    Banco banco;
+    EXPECT_EQ(banco.getContas().size(), 0);
+}
+
 TEST(BancoTest, AbrirConta) {
     Banco banco;
     banco.abrirConta();
     EXPECT_EQ(banco.getContas().size(), 1);
+}
+
+TEST(BancoTest, AbrirDuasContas) {
+    Banco banco;
+    banco.abrirConta();
+    banco.abrirConta();
+    EXPECT_EQ(banco.getContas().size(), 2);
 }
 
 TEST(BancoTest, TransferirComSaldoSuficiente) {
@@ -63,6 +75,40 @@ TEST(BancoTest, EncerrarContaInexistente) {
     auto contas = banco.getContas();
     banco.encerrarConta(); // tenta encerrar uma conta inexistente
     EXPECT_EQ(contas.size(), 1);
+}
+
+TEST(ContaTest, ConsultarSaldoInicial) {
+    Conta conta(1, "Titular", "senha");
+    EXPECT_EQ(conta.consultarSaldo(), 0.0);
+}
+
+TEST(ContaTest, ExibirHistoricoVazio) {
+    Conta conta(1, "Titular", "senha");
+    std::stringstream buffer;
+    std::streambuf* oldBuffer = std::cout.rdbuf(buffer.rdbuf()); // redireciona a saída padrão para o buffer
+    conta.exibirHistorico();
+    std::cout.rdbuf(oldBuffer); // restaura o redirecionamento
+    EXPECT_EQ(buffer.str(), "\nHistórico de transações da conta 1:\n");
+}
+
+TEST(BancoTest, ConsultarSaldoContaInexistente) {
+    Banco banco;
+    auto& contas = banco.getContas();
+    std::stringstream buffer;
+    std::streambuf* oldBuffer = std::cout.rdbuf(buffer.rdbuf()); // redireciona a saída padrão para o buffer
+    banco.consultarSaldo(); // tenta consultar saldo de uma conta inexistente
+    std::cout.rdbuf(oldBuffer); // restaura o redirecionamento
+    EXPECT_EQ(buffer.str(), "Digite o número da conta: Conta não encontrada.\n");
+}
+
+TEST(BancoTest, VerExtratoContaInexistente) {
+    Banco banco;
+    auto& contas = banco.getContas();
+    std::stringstream buffer;
+    std::streambuf* oldBuffer = std::cout.rdbuf(buffer.rdbuf()); // redireciona a saída padrão para o buffer
+    banco.verExtratoConta(); // tenta ver o extrato de uma conta inexistente
+    std::cout.rdbuf(oldBuffer); // restaura o redirecionamento
+    EXPECT_EQ(buffer.str(), "Digite o número da conta: Conta não encontrada.\n");
 }
 
 int main(int argc, char** argv) {
