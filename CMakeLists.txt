@@ -1,38 +1,37 @@
 cmake_minimum_required(VERSION 3.12)
+project(bank)
 
-# Define o projeto
-project(BankSystem)
+# Set C++ standard to 17
+set(CMAKE_CXX_STANDARD 17)
 
-option(BUILD_TESTS "Build tests" OFF)
+# Find GoogleTest
+find_package(GTest REQUIRED)
 
-# Configuração do projeto principal
-add_executable(main 
-    src/main.cpp 
-    src/banco.cpp 
-    src/conta.cpp 
+# Add your main executable
+add_executable(main
+    src/main.cpp
+    src/banco.cpp
+    src/conta.cpp
     src/gerenciador_memoria.cpp
+    # Add other source files as needed
 )
 
-# Adiciona os arquivos fonte do projeto (banco.cpp e conta.cpp)
-file(GLOB PROJECT_SOURCES "src/*.cpp")
-
-# Configuração do executável de teste
-add_executable(MyArduinoTests 
-    ${PROJECT_SOURCES}
+# Add your test executable
+add_executable(MyArduinoTests
     testes.cpp
+    src/banco.cpp
+    src/conta.cpp
+    src/gerenciador_memoria.cpp
+    # Add other source files as needed
 )
 
-# Adiciona o diretório de inclusão
-target_include_directories(MyArduinoTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+# Link GoogleTest to your test executable
+target_link_libraries(MyArduinoTests GTest::GTest GTest::Main)
 
-# Adiciona o diretório de inclusão globalmente
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+# Include the source directory for header files
+target_include_directories(main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(MyArduinoTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-if(BUILD_TESTS)
-    # Configuração do executável de testes
-    add_executable(testes 
-        ${PROJECT_SOURCES}
-        testes.cpp
-    )
-    target_compile_definitions(testes PRIVATE RUN_TESTS)
-endif()
+# Optionally, you can enable testing using CTest
+include(GoogleTest)
+gtest_discover_tests(MyArduinoTests)
