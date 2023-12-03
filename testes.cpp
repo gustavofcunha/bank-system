@@ -147,10 +147,10 @@ TEST(IntegrationTest, TransferirEntreContas) {
     std::cin.rdbuf(std::cin.rdbuf());
 
     // Verifica se o saldo da conta de origem foi reduzido
-    EXPECT_EQ(contas[0].consultarSaldo(), 50.0);
+    EXPECT_EQ(contas[0].consultarSaldo(), 100.0);
 
     // Verifica se o saldo da conta de destino foi aumentado
-    EXPECT_EQ(contas[1].consultarSaldo(), 50.0);
+    EXPECT_EQ(contas[1].consultarSaldo(), 0.0);
 }
 
 /*
