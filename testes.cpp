@@ -206,7 +206,7 @@ TEST(IntegrationTest, DepositoSaqueConta) {
     EXPECT_DOUBLE_EQ(conta.consultarSaldo(), 0.0);  // O saldo não é atualizado no banco automaticamente
 
     // Definindo saldo manualmente para o teste de saque
-    conta.depositar(150.0);
+    conta.depositar(150.0, true);
 
     // Saque na conta
     testing::internal::CaptureStdout();  // Captura a saída novamente
