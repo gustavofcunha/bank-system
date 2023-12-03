@@ -14,21 +14,26 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install build dependencies
+    - name: Install build dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        if ($env:GITHUB_JOB_OS -eq "ubuntu-latest") {
-          sudo apt-get update
-          sudo apt-get install -y cmake
-          sudo apt-get install -y libgtest-dev
-          sudo apt-get install -y build-essential
-        } elseif ($env:GITHUB_JOB_OS -eq "macos-latest") {
-          brew update
-          brew install cmake
-          brew install gtest
-        } elseif ($env:GITHUB_JOB_OS -eq "windows-latest") {
-          choco install cmake
-          choco install visualstudio2019buildtools
-        }
+        sudo apt-get update
+        sudo apt-get install -y cmake
+        sudo apt-get install -y libgtest-dev
+        sudo apt-get install -y build-essential
+
+    - name: Install build dependencies (MacOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew update
+        brew install cmake
+        brew install gtest
+
+    - name: Install build dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install cmake
+        choco install visualstudio2019buildtools
 
     - name: Build and run tests
       run: |
