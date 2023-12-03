@@ -153,7 +153,7 @@ TEST(IntegrationTest, TransferirEntreContas) {
     EXPECT_EQ(contas[1].consultarSaldo(), 0.0);
 }
 
-/*
+
 TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
     Banco banco;
     auto& contas = banco.getContas();
@@ -192,6 +192,7 @@ TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
     EXPECT_EQ(contas.size(), 0);
 }
 
+/*
 TEST(IntegrationTest, DepositoSaqueConta) {
     Banco banco;
     Conta conta(1, "Titular", "senha123");
