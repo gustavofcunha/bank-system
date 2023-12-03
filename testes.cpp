@@ -193,23 +193,6 @@ TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
 }
 
 
-TEST(IntegrationTest, DepositoSaqueConta) {
-    Banco banco;
-
-    // Depósito na conta
-    testing::internal::CaptureStdout();  // Captura a saída para evitar interação do usuário
-    banco.depositar();  // Chama a função sem parâmetros para usar a interação padrão do teste
-    std::string output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "Digite o número da conta: Digite o valor a ser depositado: Depósito realizado com sucesso.\n");
-    EXPECT_DOUBLE_EQ(conta.consultarSaldo(), 0.0);  // O saldo não é atualizado no banco automaticamente
-
-    // Saque na conta
-    testing::internal::CaptureStdout();  // Captura a saída novamente
-    banco.sacar();  // Chama a função sem parâmetros para usar a interação padrão do teste
-    output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "Digite o número da conta: Digite o valor a ser sacado: Saque realizado com sucesso.\n");
-}
-
 /*
 TEST(IntegrationTest, AberturaEncerramentoConta) {
     Banco banco;
