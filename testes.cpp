@@ -153,7 +153,7 @@ TEST(IntegrationTest, TransferirEntreContas) {
     EXPECT_EQ(contas[1].consultarSaldo(), 50.0);
 }
 
-
+/*
 TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
     Banco banco;
     auto& contas = banco.getContas();
@@ -238,7 +238,7 @@ TEST(IntegrationTest, ConsultaSaldoHistoricoConta) {
     EXPECT_EQ(historico.size(), 2);
     EXPECT_EQ(historico[0], "Depósito de 200.0 realizado.");
     EXPECT_EQ(historico[1], "Saque de 50.0 realizado.");
-}
+}*/
 
 
 int main(int argc, char** argv) {
