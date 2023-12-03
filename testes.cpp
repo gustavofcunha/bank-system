@@ -111,6 +111,25 @@ TEST(BancoTest, VerExtratoContaInexistente) {
     EXPECT_EQ(buffer.str(), "Digite o número da conta: Conta não encontrada.\n");
 }
 
+TEST(BancoTest, TransferirParaContaInexistente) {
+    Banco banco;
+    auto& contas = banco.getContas();
+    
+    // Cria uma conta de origem com saldo
+    Conta contaOrigem(1, "TitularOrigem", "senha");
+    contaOrigem.depositar(100.0, true);
+    contas.push_back(contaOrigem);
+
+    // Tenta transferir para uma conta de destino inexistente
+    std::stringstream buffer;
+    std::streambuf* oldBuffer = std::cout.rdbuf(buffer.rdbuf()); // redireciona a saída padrão para o buffer
+    banco.transferir(); 
+    std::cout.rdbuf(oldBuffer); // restaura o redirecionamento
+
+    // Verifica se a mensagem de conta de destino não encontrada foi exibida
+    EXPECT_EQ(buffer.str(), "Digite o número da conta de origem: Digite o número da conta de destino: Conta de destino não encontrada.\n");
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
