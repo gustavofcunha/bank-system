@@ -22,4 +22,4 @@ jobs:
         cmake -Bbuild -H.
         cmake --build build
         cd build
-        ctest
+        ./MyArduinoTests

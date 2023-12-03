@@ -1,4 +1,3 @@
-#include <iostream>
 #include <gtest/gtest.h>
 #include "include/banco.h"
 #include "include/conta.h"
