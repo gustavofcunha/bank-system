@@ -41,4 +41,10 @@ jobs:
         cmake -Bbuild -H.
         cmake --build build
         cd build
-        ./MyArduinoTests
+        if ($env:CI_OS_NAME -eq "Windows") {
+          .\MyArduinoTests
+        } else {
+          ./MyArduinoTests
+        }
+      env:
+        CI_OS_NAME: ${{ matrix.os }}

@@ -160,15 +160,17 @@ TEST(BancoIntegrationTest, ConsultarInformacoesConta) {
     banco.abrirConta();
     banco.depositar();
 
-    // Captura a saída padrão usando ::testing::ScopedRedirectStdout
+    // Captura a saída padrão usando ::testing::internal::CaptureStdout
     ::testing::internal::CaptureStdout();
-    {
-        ::testing::internal::ScopedRedirectStdout redirect_stdout;
-        banco.verInformacoesConta();
-    }
+    
+    // Chama a função que imprime as informações da conta
+    banco.verInformacoesConta();
+    
+    // Obtém a saída capturada
     std::string output = ::testing::internal::GetCapturedStdout();
-
-    ASSERT_FALSE(output.empty()); // Verifica se a saída não está vazia
+    
+    // Verifica se a saída não está vazia
+    ASSERT_FALSE(output.empty());
 }
 
 /*
