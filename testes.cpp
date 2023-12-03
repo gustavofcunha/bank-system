@@ -155,53 +155,31 @@ TEST(IntegrationTest, TransferirEntreContas) {
 
 
 
-TEST(BancoIntegrationTest, ConsultarInformacoesConta) {
+TEST(BancoSystemTest, DepositarEVerificarSaldo) {
     Banco banco;
     banco.abrirConta();
+
+    // Depositar em uma conta
     banco.depositar();
 
-    // Captura a saída padrão usando ::testing::internal::CaptureStdout
-    ::testing::internal::CaptureStdout();
-    
-    // Chama a função que imprime as informações da conta
-    banco.verInformacoesConta();
-    
-    // Obtém a saída capturada
-    std::string output = ::testing::internal::GetCapturedStdout();
-    
-    // Verifica se a saída não está vazia
-    ASSERT_FALSE(output.empty());
+    // Verificar se o saldo da conta foi atualizado corretamente
+    const std::vector<Conta>& contas = banco.getContas();
+    ASSERT_FALSE(contas.empty());
+    ASSERT_GT(contas[0].consultarSaldo(), 0.0);
 }
 
 /*
-TEST(BancoIntegrationTest, ConsultarExtratoConta) {
+TEST(BancoSystemTest, TentarSacarDeContaRecemAberta) {
     Banco banco;
     banco.abrirConta();
-    banco.depositar();
 
     testing::internal::CaptureStdout(); // Captura a saída padrão
-    banco.verExtratoConta();
+    // Tenta sacar de uma conta recém-aberta
+    banco.sacar();
     std::string output = testing::internal::GetCapturedStdout(); // Obtém a saída capturada
 
-    ASSERT_FALSE(output.empty()); // Verifica se a saída não está vazia
-}
-
-
-TEST(BancoSystemTest, TentarEncerrarContaComSaldoNegativo) {
-    Banco banco;
-    banco.abrirConta();
-    banco.depositar();
-
-    // Tenta realizar uma transferência para deixar a conta com saldo negativo
-    banco.transferir();
-
-    testing::internal::CaptureStdout(); // Captura a saída padrão
-    // Tenta encerrar uma conta com saldo negativo
-    banco.encerrarConta();
-    std::string output = testing::internal::GetCapturedStdout(); // Obtém a saída capturada
-
+    // Verifica se a mensagem de "Saldo insuficiente" está presente na saída
     ASSERT_TRUE(output.find("Saldo insuficiente.") != std::string::npos);
-    ASSERT_EQ(banco.getContas().size(), 1); // Verifica se a conta não foi encerrada
 }
 }*/
 
