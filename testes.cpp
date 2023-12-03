@@ -157,7 +157,7 @@ TEST(IntegrationTest, TransferirEntreContas) {
 TEST(BancoSystemTest, IniciarBanco) {
     Banco banco;
  
-    ASSERT_GT(banco.getContas().empty());
+    EXPECT_TRUE(banco.getContas().empty());
 }
 
 /*
