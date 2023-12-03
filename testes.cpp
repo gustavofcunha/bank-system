@@ -119,7 +119,7 @@ TEST(UnitBancoTest, VerificarSenha) {
 }
 
 //---------------------------------------------------------------------------------------
-/*
+
 TEST(IntegrationTest, TransferirEntreContas) {
     Banco banco;
     auto& contas = banco.getContas();
@@ -153,7 +153,7 @@ TEST(IntegrationTest, TransferirEntreContas) {
     EXPECT_EQ(contas[1].consultarSaldo(), 50.0);
 }
 
-// Teste de integração para abrir uma conta, sacar e encerrar a conta
+
 TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
     Banco banco;
     auto& contas = banco.getContas();
@@ -191,7 +191,55 @@ TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
     // Verifica se a conta foi removida da lista de contas
     EXPECT_EQ(contas.size(), 0);
 }
-*/
+
+TEST(IntegrationTest, DepositoSaqueConta) {
+    Banco banco;
+    Conta conta(1, "Titular", "senha123");
+    banco.getContas().push_back(conta);
+
+    // Depósito na conta
+    banco.depositar(1, 150.0);
+    EXPECT_DOUBLE_EQ(conta.consultarSaldo(), 150.0);
+
+    // Saque na conta
+    banco.sacar(1, 50.0);
+    EXPECT_DOUBLE_EQ(conta.consultarSaldo(), 100.0);
+}
+
+TEST(IntegrationTest, AberturaEncerramentoConta) {
+    Banco banco;
+
+    // Abertura de conta
+    banco.abrirConta("NovoTitular", "novasenha");
+    EXPECT_EQ(banco.getContas().size(), 1);
+
+    // Encerramento de conta
+    banco.encerrarConta(1);
+    EXPECT_EQ(banco.getContas().size(), 0);
+}
+
+TEST(IntegrationTest, ConsultaSaldoHistoricoConta) {
+    Banco banco;
+    Conta conta(1, "Titular", "senha123");
+    banco.getContas().push_back(conta);
+
+    // Depósito na conta
+    banco.depositar(1, 200.0);
+
+    // Consulta de saldo
+    EXPECT_DOUBLE_EQ(banco.consultarSaldo(1), 200.0);
+
+    // Saque na conta
+    banco.sacar(1, 50.0);
+
+    // Verifica histórico de transações
+    banco.verExtratoConta(1);
+    const auto& historico = conta.getHistorico();
+    EXPECT_EQ(historico.size(), 2);
+    EXPECT_EQ(historico[0], "Depósito de 200.0 realizado.");
+    EXPECT_EQ(historico[1], "Saque de 50.0 realizado.");
+}
+
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
