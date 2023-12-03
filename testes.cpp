@@ -111,6 +111,18 @@ TEST(UnitBancoTest, VerExtratoContaInexistente) {
     EXPECT_EQ(buffer.str(), "Digite o número da conta: Conta não encontrada.\n");
 }
 
+TEST(UnitBancoTest, VerificarSenha) {
+    Banco banco;
+    Conta conta(1, "Titular", "senha123");
+    banco.getContas().push_back(conta);
+
+    // Senha correta
+    EXPECT_TRUE(banco.verificarSenha(conta));
+
+    // Senha incorreta
+    EXPECT_FALSE(banco.verificarSenha(conta));
+}
+
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
