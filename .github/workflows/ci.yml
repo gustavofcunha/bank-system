@@ -27,7 +27,7 @@ jobs:
       run: |
         brew update
         brew install cmake
-        brew install gtest
+        brew install googletest
 
     - name: Install build dependencies (Windows)
       if: matrix.os == 'windows-latest'
