@@ -194,11 +194,9 @@ TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
 
 
 TEST(IntegrationTest, DepositoSaqueConta) {
-    std::vector<Conta> contas;
-    Banco banco(contas);
-    
+    Banco banco;
+
     Conta conta(1, "Titular", "senha123");
-    banco.getContas().push_back(conta);
 
     // Depósito na conta
     testing::internal::CaptureStdout();  // Captura a saída para evitar interação do usuário
