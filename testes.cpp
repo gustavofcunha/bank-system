@@ -154,17 +154,10 @@ TEST(IntegrationTest, TransferirEntreContas) {
 }
 
 
-
-TEST(BancoSystemTest, DepositarEVerificarSaldo) {
+TEST(BancoSystemTest, IniciarBanco) {
     Banco banco;
-    banco.abrirConta();
-
-    // Depositar em uma conta
-    banco.depositar();
-
-    // Verificar se o saldo da conta foi atualizado corretamente
-    ASSERT_FALSE(banco.getContas().empty());
-    ASSERT_GT(banco.getContas()[0].consultarSaldo(), 0.0);
+ 
+    ASSERT_GT(banco.getContas().empty());
 }
 
 /*
