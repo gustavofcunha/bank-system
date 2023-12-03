@@ -37,6 +37,7 @@ jobs:
 
     - name: Build and run tests
       run: |
+        mkdir build
         cmake -Bbuild -H.
         cmake --build build
         cd build

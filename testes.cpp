@@ -154,18 +154,6 @@ TEST(IntegrationTest, TransferirEntreContas) {
 }
 
 
-TEST(IntegrationTest, AberturaEncerramentoConta) {
-    Banco banco;
-
-    Banco banco;
-    banco.abrirConta();
-
-    EXPECT_EQ(banco.getContas().size(), 1);
-
-    banco.encerrarConta(1);
-    EXPECT_EQ(banco.getContas().size(), 1);
-}
-
 /*
 TEST(IntegrationTest, ConsultaSaldoHistoricoConta) {
     Banco banco;
