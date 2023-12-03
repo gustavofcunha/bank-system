@@ -163,9 +163,8 @@ TEST(BancoSystemTest, DepositarEVerificarSaldo) {
     banco.depositar();
 
     // Verificar se o saldo da conta foi atualizado corretamente
-    const std::vector<Conta>& contas = banco.getContas();
-    ASSERT_FALSE(contas.empty());
-    ASSERT_GT(contas[0].consultarSaldo(), 0.0);
+    ASSERT_FALSE(banco.getContas().empty());
+    ASSERT_GT(banco.getContas()[0].consultarSaldo(), 0.0);
 }
 
 /*
