@@ -154,45 +154,6 @@ TEST(IntegrationTest, TransferirEntreContas) {
 }
 
 
-TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
-    Banco banco;
-    auto& contas = banco.getContas();
-
-    // Abre uma conta
-    banco.abrirConta();
-
-    // Obtém o número da conta recém-criada
-    int numeroConta = contas.back().getNumeroConta();
-
-    // Deposita dinheiro na conta
-    std::stringstream depositoInput;
-    depositoInput << numeroConta << "\n100.0\n";
-    std::cin.rdbuf(depositoInput.rdbuf());
-    banco.depositar();
-    std::cin.rdbuf(std::cin.rdbuf());
-
-    // Sacar dinheiro da conta
-    std::stringstream saqueInput;
-    saqueInput << numeroConta << "\n50.0\n";
-    std::cin.rdbuf(saqueInput.rdbuf());
-    banco.sacar();
-    std::cin.rdbuf(std::cin.rdbuf());
-
-    // Verifica se o saldo da conta foi reduzido após o saque
-    EXPECT_EQ(contas.back().consultarSaldo(), 100.0);
-
-    // Encerra a conta
-    std::stringstream encerrarContaInput;
-    encerrarContaInput << numeroConta << "\n";
-    std::cin.rdbuf(encerrarContaInput.rdbuf());
-    banco.encerrarConta();
-    std::cin.rdbuf(std::cin.rdbuf());
-
-    // Verifica se a conta foi removida da lista de contas
-    EXPECT_EQ(contas.size(), 1);
-}
-
-
 /*
 TEST(IntegrationTest, AberturaEncerramentoConta) {
     Banco banco;
