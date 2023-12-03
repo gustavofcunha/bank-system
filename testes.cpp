@@ -194,7 +194,9 @@ TEST(IntegrationTest, AbrirContaSacarEncerrarConta) {
 
 
 TEST(IntegrationTest, DepositoSaqueConta) {
-    Banco banco;
+    std::vector<Conta> contas;
+    Banco banco(contas);
+    
     Conta conta(1, "Titular", "senha123");
     banco.getContas().push_back(conta);
 
