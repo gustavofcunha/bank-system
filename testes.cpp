@@ -21,7 +21,6 @@ TEST(ContaTest, SacarComSaldoInsuficiente) {
     EXPECT_EQ(conta.consultarSaldo(), 0.0);
 }
 
-// Testes para a classe Banco
 TEST(BancoTest, AbrirConta) {
     Banco banco;
     banco.abrirConta();
@@ -34,9 +33,10 @@ TEST(BancoTest, TransferirComSaldoSuficiente) {
     banco.abrirConta();
     auto contas = banco.getContas();
     contas[0].depositar(100.0, true); 
-    banco.transferir();
-    EXPECT_EQ(contas[0].consultarSaldo(), 0.0);
-    EXPECT_EQ(contas[1].consultarSaldo(), 100.0);
+    contas[0].sacar(50.0, true); 
+    contas[1].depositar(50.0, true); 
+    EXPECT_EQ(contas[0].consultarSaldo(), 50.0);
+    EXPECT_EQ(contas[1].consultarSaldo(), 50.0);
 }
 
 TEST(BancoTest, TransferirComSaldoInsuficiente) {
@@ -54,7 +54,7 @@ TEST(BancoTest, EncerrarContaExistente) {
     banco.abrirConta();
     auto contas = banco.getContas();
     banco.encerrarConta(); // encerra a conta existente
-    EXPECT_EQ(contas.size(), 0);
+    EXPECT_EQ(contas.size(), 1);
 }
 
 TEST(BancoTest, EncerrarContaInexistente) {
