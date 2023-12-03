@@ -6,7 +6,7 @@ GerenciadorMemoria gerenciadorMemoria;
 
 Conta::Conta(int numero, std::string titular, std::string senha) : numeroConta(numero), titular(titular), saldo(0.0), senha(senha) {}
 
-void Conta::depositar(double valor, bool registrar) {
+void Conta::depositar(double valor, bool registrar) const{
     saldo += valor;
 
     if(registrar){
@@ -16,7 +16,7 @@ void Conta::depositar(double valor, bool registrar) {
     }
 }
 
-bool Conta::sacar(double valor, bool registrar) {
+bool Conta::sacar(double valor, bool registrar) const{
     if (saldo >= valor) {
         saldo -= valor;
         if(registrar){
