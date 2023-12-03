@@ -33,7 +33,7 @@ TEST(BancoTest, TransferirComSaldoSuficiente) {
     banco.abrirConta();
     banco.abrirConta();
     auto& contas = banco.getContas();
-    contas[0].depositar(100.0, true);
+    contas[0].depositar(100.0, true); 
     banco.transferir();
     EXPECT_EQ(contas[0].consultarSaldo(), 0.0);
     EXPECT_EQ(contas[1].consultarSaldo(), 100.0);
