@@ -161,27 +161,114 @@ TEST(BancoSystemTest, IniciarBanco) {
 }
 
 
-TEST(BancoSystemTest, TentarSacarDeContaRecemAberta) {
+TEST(IntegrationTest, AbrirContaDepositarSacar) {
     Banco banco;
-    banco.abrirConta();
 
-    std::ostringstream capturedOutput; // Usaremos std::ostringstream para capturar a saída
-    // Redireciona std::cout para o std::ostringstream
+    std::ostringstream capturedOutput;
     testing::internal::CaptureStdout();
     std::streambuf* originalStdout = std::cout.rdbuf();
     std::cout.rdbuf(capturedOutput.rdbuf());
 
-    // Tenta sacar de uma conta recém-aberta
-    banco.sacar();
+    // Simula a entrada do usuário para abrir uma conta, depositar e sacar dinheiro
+    std::stringstream userInput;
+    userInput << "1\n";  // Número da opção para abrir conta
+    userInput << "2\n";  // Número da opção para depositar
+    userInput << "100.0\n";  // Valor do depósito
+    userInput << "3\n";  // Número da opção para sacar
+    userInput << "50.0\n";  // Valor do saque
+    std::cin.rdbuf(userInput.rdbuf());
 
-    // Restaura o std::cout
+    banco.executarOperacoes();  // Função que interage com o usuário
+
+    std::cin.rdbuf(std::cin.rdbuf());
     std::cout.rdbuf(originalStdout);
-    std::string output = capturedOutput.str(); // Obtém a saída capturada
+    std::string output = capturedOutput.str();
 
-    // Verifica se a mensagem de "Saldo insuficiente" está presente na saída
-    ASSERT_TRUE(output.find("Saldo insuficiente.") != std::string::npos);
+    // Verifica se a mensagem de "Conta aberta com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Conta aberta com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Depósito realizado com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Depósito realizado com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Saque realizado com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Saque realizado com sucesso.") != std::string::npos);
+    // Verifica se o saldo final da conta é correto
+    ASSERT_EQ(banco.getContas()[0].consultarSaldo(), 50.0);
 }
 
+/*
+TEST(IntegrationTest, AbrirDuasContasTransferir) {
+    Banco banco;
+
+    std::ostringstream capturedOutput;
+    testing::internal::CaptureStdout();
+    std::streambuf* originalStdout = std::cout.rdbuf();
+    std::cout.rdbuf(capturedOutput.rdbuf());
+
+    // Simula a entrada do usuário para abrir duas contas e transferir dinheiro entre elas
+    std::stringstream userInput;
+    userInput << "1\n";  // Número da opção para abrir conta (conta 1)
+    userInput << "1\n";  // Número da opção para abrir conta (conta 2)
+    userInput << "3\n";  // Número da opção para transferir
+    userInput << "1\n";  // Número da conta de origem
+    userInput << "2\n";  // Número da conta de destino
+    userInput << "50.0\n";  // Valor a ser transferido
+    std::cin.rdbuf(userInput.rdbuf());
+
+    banco.executarOperacoes();  // Função que interage com o usuário
+
+    std::cin.rdbuf(std::cin.rdbuf());
+    std::cout.rdbuf(originalStdout);
+    std::string output = capturedOutput.str();
+
+    // Verifica se a mensagem de "Conta aberta com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Conta aberta com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Transferência realizada com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Transferência realizada com sucesso.") != std::string::npos);
+    // Verifica se o saldo final da conta de origem é correto
+    ASSERT_EQ(banco.getContas()[0].consultarSaldo(), 0.0);
+    // Verifica se o saldo final da conta de destino é correto
+    ASSERT_EQ(banco.getContas()[1].consultarSaldo(), 50.0);
+}
+
+TEST(IntegrationTest, AbrirContaDepositarSacarTransferir) {
+    Banco banco;
+
+    std::ostringstream capturedOutput;
+    testing::internal::CaptureStdout();
+    std::streambuf* originalStdout = std::cout.rdbuf();
+    std::cout.rdbuf(capturedOutput.rdbuf());
+
+    // Simula a entrada do usuário para abrir uma conta, depositar, sacar e transferir dinheiro
+    std::stringstream userInput;
+    userInput << "1\n";  // Número da opção para abrir conta
+    userInput << "2\n";  // Número da opção para depositar
+    userInput << "100.0\n";  // Valor do depósito
+    userInput << "3\n";  // Número da opção para sacar
+    userInput << "50.0\n";  // Valor do saque
+    userInput << "4\n";  // Número da opção para transferir
+    userInput << "1\n";  // Número da conta de origem
+    userInput << "2\n";  // Número da conta de destino
+    userInput << "30.0\n";  // Valor a ser transferido
+    std::cin.rdbuf(userInput.rdbuf());
+
+    banco.executarOperacoes();  // Função que interage com o usuário
+
+    std::cin.rdbuf(std::cin.rdbuf());
+    std::cout.rdbuf(originalStdout);
+    std::string output = capturedOutput.str();
+
+    // Verifica se a mensagem de "Conta aberta com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Conta aberta com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Depósito realizado com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Depósito realizado com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Saque realizado com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Saque realizado com sucesso.") != std::string::npos);
+    // Verifica se a mensagem de "Transferência realizada com sucesso." está presente na saída
+    ASSERT_TRUE(output.find("Transferência realizada com sucesso.") != std::string::npos);
+    // Verifica se o saldo final da conta de origem é correto
+    ASSERT_EQ(banco.getContas()[0].consultarSaldo(), 20.0);
+    // Verifica se o saldo final da conta de destino é correto
+    ASSERT_EQ(banco.getContas()[1].consultarSaldo(), 30.0);
+}*/
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
