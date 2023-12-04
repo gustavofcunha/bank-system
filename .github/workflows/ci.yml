@@ -37,15 +37,14 @@ jobs:
 
     - name: Build and run tests
       run: |
-          mkdir build
-          cmake -Bbuild -H.
-          cmake --build build
-          cd build
-          if ($env:CI_OS_NAME -eq "Windows") {
-            .\MyArduinoTests
-          } else {
-            ./MyArduinoTests
-          }
-      shell: bash
+        mkdir build
+        cmake -Bbuild -H.
+        cmake --build build
+        cd build
+        if [ "$CI_OS_NAME" == "Windows" ]; then
+          .\MyArduinoTests
+        else
+          ./MyArduinoTests
+        fi
       env:
         CI_OS_NAME: ${{ matrix.os }}
