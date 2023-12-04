@@ -160,20 +160,27 @@ TEST(BancoSystemTest, IniciarBanco) {
     EXPECT_TRUE(banco.getContas().empty());
 }
 
-/*
+
 TEST(BancoSystemTest, TentarSacarDeContaRecemAberta) {
     Banco banco;
     banco.abrirConta();
 
-    testing::internal::CaptureStdout(); // Captura a saída padrão
+    std::ostringstream capturedOutput; // Usaremos std::ostringstream para capturar a saída
+    // Redireciona std::cout para o std::ostringstream
+    testing::internal::CaptureStdout();
+    std::streambuf* originalStdout = std::cout.rdbuf();
+    std::cout.rdbuf(capturedOutput.rdbuf());
+
     // Tenta sacar de uma conta recém-aberta
     banco.sacar();
-    std::string output = testing::internal::GetCapturedStdout(); // Obtém a saída capturada
+
+    // Restaura o std::cout
+    std::cout.rdbuf(originalStdout);
+    std::string output = capturedOutput.str(); // Obtém a saída capturada
 
     // Verifica se a mensagem de "Saldo insuficiente" está presente na saída
     ASSERT_TRUE(output.find("Saldo insuficiente.") != std::string::npos);
 }
-}*/
 
 
 int main(int argc, char** argv) {
